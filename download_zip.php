@@ -1,12 +1,13 @@
 <?php
-if (isset($_POST['colors'])) {
+if (isset($_POST['colors']) && isset($_POST['size'])) {
   $colors = json_decode($_POST['colors'], true);
+  $size = (int) $_POST['size'];
   $zip = new ZipArchive();
   $zipFileName = tempnam(sys_get_temp_dir(), 'colors') . '.zip';
 
   if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
     foreach ($colors as $color) {
-      $image = imagecreatetruecolor(100, 100);
+      $image = imagecreatetruecolor($size, $size);
       list($r, $g, $b) = sscanf($color, "#%02x%02x%02x");
       $colorAlloc = imagecolorallocate($image, $r, $g, $b);
       imagefill($image, 0, 0, $colorAlloc);
@@ -14,7 +15,7 @@ if (isset($_POST['colors'])) {
       imagepng($image);
       $imageData = ob_get_clean();
       imagedestroy($image);
-      $zip->addFromString('color-' . substr($color, 1) . '.png', $imageData);
+      $zip->addFromString('color-' . substr($color, 1) . ".png", $imageData);
     }
     $zip->close();
 

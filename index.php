@@ -89,6 +89,7 @@ $kelvin_colors = [
       font-family: Arial, sans-serif;
       margin: 20px;
       background-color: #f4f4f4;
+      padding-bottom: 3rem;
     }
 
     h1 {
@@ -109,10 +110,13 @@ $kelvin_colors = [
       margin: 5px;
       cursor: pointer;
       border: 2px solid transparent;
+      border-radius: 5px;
       transition: border 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
+      box-shadow: 0 0 0 1px #ccc;
+      /* Leichter Rahmen */
     }
 
     .color-box:hover {
@@ -158,6 +162,8 @@ $kelvin_colors = [
       cursor: pointer;
       border-radius: 5px;
       transition: background-color 0.3s ease;
+      margin-right: 20px;
+      /* Abstand zum Rand der Bottombar */
     }
 
     #download-btn:hover {
@@ -187,11 +193,20 @@ $kelvin_colors = [
 
   <div id="bottom-bar">
     <div id="selected-count">0 Farben ausgewählt</div>
-    <button id="download-btn">Bilder herunterladen</button>
+    <div>
+      <label for="size-select">Bildgröße:</label>
+      <select id="size-select" name="size">
+        <option value="100">100x100</option>
+        <option value="200">200x200</option>
+        <option value="300">300x300</option>
+      </select>
+      <button id="download-btn">Bilder herunterladen</button>
+    </div>
   </div>
 
   <form id="download-form" action="download_zip.php" method="POST" style="display:none;">
     <input type="hidden" name="colors" id="colors-input">
+    <input type="hidden" name="size" id="size-input">
   </form>
 
   <script>
@@ -199,7 +214,9 @@ $kelvin_colors = [
       const colorBoxes = document.querySelectorAll( '.color-box' );
       const downloadBtn = document.getElementById( 'download-btn' );
       const colorsInput = document.getElementById( 'colors-input' );
+      const sizeInput = document.getElementById( 'size-input' );
       const selectedCount = document.getElementById( 'selected-count' );
+      const sizeSelect = document.getElementById( 'size-select' );
       let selectedColors = [];
 
       colorBoxes.forEach( box => {
@@ -218,6 +235,7 @@ $kelvin_colors = [
       downloadBtn.addEventListener( 'click', function () {
         if ( selectedColors.length > 0 ) {
           colorsInput.value = JSON.stringify( selectedColors );
+          sizeInput.value = sizeSelect.value;
           document.getElementById( 'download-form' ).submit();
         } else {
           alert( 'Bitte wählen Sie mindestens eine Farbe aus.' );
