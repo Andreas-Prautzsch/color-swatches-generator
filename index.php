@@ -89,7 +89,6 @@ $kelvin_colors = [
       font-family: Arial, sans-serif;
       margin: 20px;
       background-color: #f4f4f4;
-      padding-bottom: 3rem;
     }
 
     h1 {
@@ -132,6 +131,12 @@ $kelvin_colors = [
       font-size: 24px;
       color: white;
       position: absolute;
+    }
+
+    .color-label {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 5px;
     }
 
     .category-title {
@@ -179,7 +184,10 @@ $kelvin_colors = [
     <div class="category-title"><?= ucfirst($color_name) ?></div>
     <div class="color-container">
       <?php foreach ($shades as $shade => $hex) : ?>
-        <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"></div>
+        <div class="color-item">
+          <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"></div>
+          <div class="color-label"><?= $shade ?></div>
+        </div>
       <?php endforeach; ?>
     </div>
   <?php endforeach; ?>
@@ -187,7 +195,10 @@ $kelvin_colors = [
   <div class="category-title">Lichtfarben (Kelvin)</div>
   <div class="color-container">
     <?php foreach ($kelvin_colors as $kelvin => $hex) : ?>
-      <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"></div>
+      <div class="color-item">
+        <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"></div>
+        <div class="color-label"><?= $kelvin ?>K</div>
+      </div>
     <?php endforeach; ?>
   </div>
 
