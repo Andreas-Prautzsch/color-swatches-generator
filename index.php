@@ -89,6 +89,8 @@ $kelvin_colors = [
       font-family: Arial, sans-serif;
       margin: 20px;
       background-color: #f4f4f4;
+      padding-bottom: 70px;
+      /* Abstand unten für die Bottom-Bar */
     }
 
     h1 {
