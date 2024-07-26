@@ -158,6 +158,20 @@ $kelvin_colors = [
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     }
 
+    #size-select-container {
+      display: flex;
+      align-items: center;
+    }
+
+    #size-select {
+      margin-left: 10px;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      font-size: 14px;
+    }
+
     #download-btn {
       padding: 10px 20px;
       font-size: 16px;
@@ -204,7 +218,7 @@ $kelvin_colors = [
 
   <div id="bottom-bar">
     <div id="selected-count">0 Farben ausgewählt</div>
-    <div>
+    <div id="size-select-container">
       <label for="size-select">Bildgröße:</label>
       <select id="size-select" name="size">
         <option value="100">100x100</option>
