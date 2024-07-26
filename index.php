@@ -129,7 +129,7 @@ $kelvin_colors = [
       margin: 20px auto;
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #007BFF;
+      background-color: #1cb095;
       color: white;
       border: none;
       cursor: pointer;
