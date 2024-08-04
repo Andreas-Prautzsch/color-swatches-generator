@@ -6,7 +6,9 @@ if (isset($_POST['colors']) && isset($_POST['size'])) {
   $zipFileName = tempnam(sys_get_temp_dir(), 'colors') . '.zip';
 
   if ($zip->open($zipFileName, ZipArchive::CREATE) === TRUE) {
-    foreach ($colors as $color) {
+    foreach ($colors as $colorInfo) {
+      $color = $colorInfo['color'];
+      $label = $colorInfo['label'];
       $image = imagecreatetruecolor($size, $size);
       list($r, $g, $b) = sscanf($color, "#%02x%02x%02x");
       $colorAlloc = imagecolorallocate($image, $r, $g, $b);
@@ -15,7 +17,7 @@ if (isset($_POST['colors']) && isset($_POST['size'])) {
       imagepng($image);
       $imageData = ob_get_clean();
       imagedestroy($image);
-      $zip->addFromString('color-' . substr($color, 1) . ".png", $imageData);
+      $zip->addFromString($label . ".png", $imageData);
     }
     $zip->close();
 

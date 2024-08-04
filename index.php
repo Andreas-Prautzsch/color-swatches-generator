@@ -163,19 +163,17 @@ $kelvin_colors = [
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     }
 
     #size-select-container {
       display: flex;
       align-items: center;
-      gap: 1rem;
     }
 
     #size-select {
       margin-left: 10px;
-      padding: 10px;
+      padding: 5px;
       border-radius: 5px;
       border: 1px solid #ccc;
       background-color: #fff;
@@ -209,7 +207,8 @@ $kelvin_colors = [
     <div class="color-container">
       <?php foreach ($shades as $shade => $hex) : ?>
         <div class="color-item">
-          <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"></div>
+          <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"
+            data-label="<?= $color_name . '-' . $shade ?>"></div>
           <div class="color-label"><?= $shade ?></div>
         </div>
       <?php endforeach; ?>
@@ -220,7 +219,8 @@ $kelvin_colors = [
   <div class="color-container">
     <?php foreach ($kelvin_colors as $kelvin => $hex) : ?>
       <div class="color-item">
-        <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"></div>
+        <div class="color-box" style="background-color: <?= $hex ?>;" data-color="<?= $hex ?>"
+          data-label="Kelvin-<?= $kelvin ?>"></div>
         <div class="color-label"><?= $kelvin ?>K</div>
       </div>
     <?php endforeach; ?>
@@ -229,14 +229,12 @@ $kelvin_colors = [
   <div id="bottom-bar">
     <div id="selected-count">0 Farben ausgewählt</div>
     <div id="size-select-container">
-      <div>
-        <label for="size-select">Bildgröße:</label>
-        <select id="size-select" name="size">
-          <option value="100">100x100</option>
-          <option value="200">200x200</option>
-          <option value="300">300x300</option>
-        </select>
-      </div>
+      <label for="size-select">Bildgröße:</label>
+      <select id="size-select" name="size">
+        <option value="100">100x100</option>
+        <option value="200">200x200</option>
+        <option value="300">300x300</option>
+      </select>
       <button id="download-btn">Bilder herunterladen</button>
     </div>
   </div>
@@ -260,10 +258,11 @@ $kelvin_colors = [
         box.addEventListener( 'click', function () {
           this.classList.toggle( 'selected' );
           const color = this.getAttribute( 'data-color' );
+          const label = this.getAttribute( 'data-label' );
           if ( this.classList.contains( 'selected' ) ) {
-            selectedColors.push( color );
+            selectedColors.push( { color, label } );
           } else {
-            selectedColors = selectedColors.filter( c => c !== color );
+            selectedColors = selectedColors.filter( c => c.color !== color );
           }
           selectedCount.textContent = `${ selectedColors.length } Farben ausgewählt`;
         } );
