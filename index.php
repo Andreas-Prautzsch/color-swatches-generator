@@ -55,16 +55,22 @@ $colors = [
 ];
 
 // Lichttemperaturen definieren (in Kelvin)
+// https://academo.org/demos/colour-temperature-relationship/
+
 $kelvin_colors = [
   1000 => "#FF3800",
   1500 => "#FF6C00",
   2000 => "#FF890E",
   2500 => "#FF9F46",
+  2700 => "#FFA757",
+  2900 => "#FFAE67",
   3000 => "#FFB16E",
   3500 => "#FFC18D",
   4000 => "#FFCEA6",
+  4100 => "#FFD0AB",
   4500 => "#FFDABB",
   5000 => "#FFE4CE",
+  5400 => "#FFECDB",
   5500 => "#FFEDDE",
   6000 => "#FFF6ED",
   6500 => "#FFFEFA",
