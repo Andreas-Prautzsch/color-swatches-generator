@@ -57,31 +57,104 @@ $colors = [
 // Lichttemperaturen definieren (in Kelvin)
 // https://academo.org/demos/colour-temperature-relationship/
 
-$kelvin_colors = [
-  1000 => "#FF3800",
-  1500 => "#FF6C00",
-  2000 => "#FF890E",
-  2500 => "#FF9F46",
-  2700 => "#FFA757",
-  2900 => "#FFAE67",
-  3000 => "#FFB16E",
-  3500 => "#FFC18D",
-  4000 => "#FFCEA6",
-  4100 => "#FFD0AB",
-  4500 => "#FFDABB",
-  5000 => "#FFE4CE",
-  5400 => "#FFECDB",
-  5500 => "#FFEDDE",
-  6000 => "#FFF6ED",
-  6500 => "#FFFEFA",
-  7000 => "#F3F2FF",
-  7500 => "#E6EBFF",
-  8000 => "#DDE6FF",
-  8500 => "#D7E2FF",
-  9000 => "#D2DFFF",
-  9500 => "#CDDCFF",
-  10000 => "#CADAFF",
-];
+// $kelvin_colors = [
+//   1000 => "#FF3800",
+//   1500 => "#FF6C00",
+//   2000 => "#FF890E",
+//   2500 => "#FF9F46",
+//   2700 => "#FFA757",
+//   2900 => "#FFAE67",
+//   3000 => "#FFB16E",
+//   3500 => "#FFC18D",
+//   4000 => "#FFCEA6",
+//   4100 => "#FFD0AB",
+//   4500 => "#FFDABB",
+//   5000 => "#f5ffff",
+//   5400 => "#FFECDB",
+//   5500 => "#FFEDDE",
+//   6000 => "#FFF6ED",
+//   6500 => "#FFFEFA",
+//   7000 => "#F3F2FF",
+//   7500 => "#E6EBFF",
+//   8000 => "#DDE6FF",
+//   8500 => "#D7E2FF",
+//   9000 => "#D2DFFF",
+//   9500 => "#CDDCFF",
+//   10000 => "#CADAFF",
+// ];
+
+$ledKelvinTable = array(
+  1700 => array(255, 147, 41),   // Candlelight
+  2000 => array(255, 189, 107),
+  2200 => array(255, 214, 170),  // Very Warm White
+  2500 => array(255, 228, 206),
+  2700 => array(255, 237, 224),  // Warm White
+  3000 => array(255, 241, 224),  // Soft White
+  3500 => array(255, 250, 244),  // Neutral White
+  4000 => array(255, 255, 255),  // Cool White
+  4500 => array(240, 248, 255),  // Slightly Cool White
+  5000 => array(234, 247, 254),  // Cool Daylight
+  5500 => array(229, 246, 254),  // Daylight
+  6000 => array(215, 235, 255),  // Cool Daylight Blue
+  6500 => array(205, 225, 255),  // Daylight Blue
+  7000 => array(195, 215, 255),  // More Blue
+  7500 => array(180, 200, 255),  // Sky Blue
+  8000 => array(165, 185, 255),  // Light Blue
+  8500 => array(150, 170, 255),  // Strong Blue
+  9000 => array(135, 155, 255),  // Stronger Blue
+  9500 => array(120, 140, 255),  // Very Strong Blue
+  10000 => array(105, 125, 255)  // Ultra Cool Daylight
+);
+
+
+function kelvinToHex($kelvin)
+{
+  global $ledKelvinTable;
+
+  if (isset($ledKelvinTable[$kelvin])) {
+    $rgb = $ledKelvinTable[$kelvin];
+    return sprintf("#%02x%02x%02x", $rgb[0], $rgb[1], $rgb[2]);
+  }
+
+  // Interpolation logic here if necessary
+  $keys = array_keys($ledKelvinTable);
+  foreach ($keys as $i => $key) {
+    if ($kelvin <= $key) {
+      if ($i == 0) {
+        return sprintf("#%02x%02x%02x", ...$ledKelvinTable[$key]);
+      }
+      $low = $keys[$i - 1];
+      $high = $key;
+      return interpolateColor($kelvin, $low, $high, $ledKelvinTable[$low], $ledKelvinTable[$high]);
+    }
+  }
+  return sprintf("#%02x%02x%02x", ...end($ledKelvinTable));
+}
+
+function interpolateColor($value, $low, $high, $colorLow, $colorHigh)
+{
+  $ratio = ($value - $low) / ($high - $low);
+  $red = (1 - $ratio) * $colorLow[0] + $ratio * $colorHigh[0];
+  $green = (1 - $ratio) * $colorLow[1] + $ratio * $colorHigh[1];
+  $blue = (1 - $ratio) * $colorLow[2] + $ratio * $colorHigh[2];
+
+  return sprintf("#%02x%02x%02x", round($red), round($green), round($blue));
+}
+
+function generateKelvinHexArrayFromValues($kelvinValues)
+{
+  $kelvinHexArray = array();
+  foreach ($kelvinValues as $kelvin) {
+    $kelvinHexArray[$kelvin] = kelvinToHex($kelvin);
+  }
+  return $kelvinHexArray;
+}
+
+
+// Beispiel-Array mit benutzerdefinierten Kelvin-Werten
+$customKelvinValues = array(1000, 1500, 2000, 2500, 2700, 2900, 3000, 3500, 4000, 4100, 4500, 5000, 5400, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000);
+
+$kelvin_colors = generateKelvinHexArrayFromValues($customKelvinValues);
 ?>
 
 <!DOCTYPE html>
